@@ -8,6 +8,12 @@ PRD Reference: PRD.md p.44-46 (API Specifications)
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from api.routes import analysis
+from database.db import engine, Base
+
+# Create database tables
+Base.metadata.create_all(bind=engine)
+
 app = FastAPI(
     title="CodeMapper API",
     description="Code Visualization and Analysis Platform",
@@ -22,6 +28,9 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Include routers
+app.include_router(analysis.router)
 
 
 @app.get("/")
