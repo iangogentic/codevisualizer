@@ -1,0 +1,559 @@
+# Cursor AI Agent Rules for CodeMapper Project
+# Version: 1.0
+# Last Updated: September 30, 2025
+
+## 🎯 PROJECT CONTEXT
+
+You are working on **CodeMapper**, a code visualization and analysis platform.
+
+**Core Documents:**
+- `PRD.md` - Complete product specification (2,138 lines)
+- `TASKS.md` - Task breakdown with status tracking
+- `RESEARCH_ANALYSIS.md` - Technical research and decisions
+- `QUICK_START_GUIDE.md` - Implementation guide
+
+**Technical Approach:**
+- Forking Emerge (https://github.com/glato/emerge) as foundation
+- Building React + TypeScript frontend with React Flow
+- 10-week MVP timeline
+- Python (FastAPI) backend + PostgreSQL + Redis
+
+---
+
+## 🔄 MANDATORY WORKFLOW - READ THIS FIRST
+
+### BEFORE EVERY RESPONSE:
+
+1. **CHECK TASK LIST**
+   ```
+   - Read TASKS.md
+   - Find current task or next task to work on
+   - Check task status and dependencies
+   - Verify acceptance criteria
+   ```
+
+2. **CHECK PRD FOR SPECIFICATIONS**
+   ```
+   - Read relevant section in PRD.md
+   - Understand requirements and acceptance criteria
+   - Check API contracts, schemas, algorithms
+   - Verify design specifications
+   ```
+
+3. **UNDERSTAND CONTEXT**
+   ```
+   - What phase are we in? (Setup, Development, Testing, Launch)
+   - What was completed previously?
+   - What's the immediate next step?
+   - Are there any blockers?
+   ```
+
+---
+
+## 📋 TASK MANAGEMENT RULES
+
+### When Starting Work:
+
+1. **Identify Current Task**
+   - Look in TASKS.md for tasks with status: ⬜ TODO or 🔄 IN PROGRESS
+   - Respect dependencies (don't start TASK-202 if TASK-201 isn't done)
+   - Follow the critical path when possible
+
+2. **Update Task Status**
+   - Change status from ⬜ TODO to 🔄 IN PROGRESS
+   - Update assignee if needed
+   - Add start date
+
+3. **Reference PRD**
+   - Read the PRD section referenced in the task
+   - Understand acceptance criteria
+   - Check for related specifications (API contracts, algorithms, UI specs)
+
+### While Working:
+
+1. **Check Off Subtasks**
+   - As you complete each subtask, check it off in TASKS.md
+   - Update inline: `- [ ]` becomes `- [x]`
+
+2. **Follow Specifications**
+   - Implement exactly as specified in PRD
+   - Use exact API contracts from PRD.md p.44-46
+   - Follow design system from PRD.md p.54-55
+   - Use database schema from PRD.md p.42
+
+3. **Write Tests**
+   - Every code change needs corresponding tests
+   - Aim for >80% coverage
+   - Tests must pass before marking task complete
+
+### After Completing Work:
+
+1. **Update Task Status**
+   ```markdown
+   **Status:** ✅ DONE
+   **Completed:** [Date]
+   **Notes:** [Any important notes]
+   ```
+
+2. **Check Off All Subtasks**
+   - Ensure all `- [ ]` are changed to `- [x]`
+
+3. **Update TASKS.md**
+   - Mark task as complete
+   - Add completion date
+   - Document any deviations from plan
+   - Note any new issues discovered
+
+4. **Verify Acceptance Criteria**
+   - Go through each acceptance criterion
+   - Confirm all are met
+   - Document if any are partially met
+
+5. **Identify Next Task**
+   - Look at dependencies
+   - Suggest which task to work on next
+   - Check if any tasks are now unblocked
+
+---
+
+## 📖 DOCUMENT REFERENCE PRIORITY
+
+When user asks to implement a feature:
+
+1. **FIRST:** Check TASKS.md - Is there a task for this?
+2. **SECOND:** Check PRD.md - What are the specifications?
+3. **THIRD:** Check RESEARCH_ANALYSIS.md - What technology decisions were made?
+4. **FOURTH:** Check QUICK_START_GUIDE.md - Are there code examples?
+
+---
+
+## 🎨 CODING STANDARDS
+
+### General Rules:
+
+1. **Follow PRD Specifications Exactly**
+   - API contracts from PRD.md p.44-46
+   - Database schema from PRD.md p.42
+   - Algorithm specifications (e.g., dead code detection PRD.md p.47)
+   - Design system colors and typography PRD.md p.54-55
+
+2. **Type Safety**
+   - TypeScript for frontend (strict mode)
+   - Python type hints for backend
+   - Define interfaces/types before implementation
+
+3. **Error Handling**
+   - All API calls must have try/catch
+   - User-facing errors must be actionable (PRD.md p.56)
+   - Log errors with context
+   - Never expose internal errors to users
+
+4. **Testing Requirements**
+   - Unit tests for all functions
+   - Integration tests for API endpoints
+   - E2E tests for critical user flows
+   - >80% code coverage
+
+5. **Documentation**
+   - JSDoc/docstrings for all public functions
+   - Explain complex logic inline
+   - Update DEVELOPMENT.md with any setup changes
+
+### Code Style:
+
+**Backend (Python):**
+```python
+# Use type hints
+def calculate_health(file: dict) -> str:
+    """
+    Calculate health score for a file.
+    
+    Args:
+        file: File metadata dict with complexity, duplicates, etc.
+        
+    Returns:
+        Health status: 'green', 'yellow', or 'red'
+        
+    PRD Reference: PRD.md p.47
+    """
+    score = 100
+    # Implementation per PRD specification...
+```
+
+**Frontend (TypeScript):**
+```typescript
+// Use interfaces
+interface AnalysisResponse {
+  id: string;
+  status: 'pending' | 'processing' | 'completed' | 'failed';
+  github_url: string;
+  // ... (PRD.md p.45)
+}
+
+// Use functional components with hooks
+const CodeGraph: React.FC<Props> = ({ analysisId }) => {
+  // Implementation...
+};
+```
+
+---
+
+## 🚦 TASK COMPLETION CHECKLIST
+
+Before marking a task as DONE (✅), verify:
+
+- [ ] All subtasks checked off
+- [ ] Code implements PRD specifications
+- [ ] Tests written and passing
+- [ ] Linting passes (no errors)
+- [ ] Acceptance criteria all met
+- [ ] Documentation updated (if needed)
+- [ ] TASKS.md updated with status
+- [ ] Next task identified
+
+---
+
+## ⚠️ CRITICAL RULES
+
+### DO:
+✅ Always check TASKS.md before starting work
+✅ Always reference PRD.md for specifications
+✅ Update task status after every significant change
+✅ Write tests for all code
+✅ Follow the 10-week timeline
+✅ Respect task dependencies
+✅ Mark tasks DONE only when acceptance criteria met
+✅ Document deviations from plan
+
+### DON'T:
+❌ Start work without checking TASKS.md
+❌ Implement features not in PRD
+❌ Skip testing
+❌ Leave tasks partially complete
+❌ Ignore dependencies between tasks
+❌ Change specifications without updating PRD
+❌ Mark task DONE if acceptance criteria not met
+
+---
+
+## 🔍 WHEN USER ASKS TO IMPLEMENT SOMETHING
+
+**Your Response Should:**
+
+1. **Identify Task**
+   - "I see this relates to TASK-XXX in TASKS.md"
+   - "This is part of [Feature Name] from PRD.md p.XX"
+
+2. **Confirm Specifications**
+   - "According to PRD.md p.XX, the specifications are..."
+   - "The acceptance criteria are..."
+
+3. **Update Task Status**
+   - Change status to 🔄 IN PROGRESS in TASKS.md
+   - Check off subtasks as you complete them
+
+4. **Implement**
+   - Follow PRD specifications exactly
+   - Write tests
+   - Update documentation
+
+5. **Complete Task**
+   - Verify acceptance criteria
+   - Update TASKS.md to ✅ DONE
+   - Identify next task
+
+**Example Response:**
+```
+I'll implement the GitHub URL validation (TASK-201).
+
+According to PRD.md p.23 (F1.0), the requirements are:
+- Accept GitHub URLs in format https://github.com/{org}/{repo}
+- Support SSH format
+- Extract org and repo name
+
+Let me update TASKS.md and begin implementation...
+
+[Implements code with tests]
+
+✅ Task complete. All acceptance criteria met:
+- Validates correct URLs ✓
+- Rejects invalid URLs with clear messages ✓
+- Test coverage >90% ✓
+
+Next suggested task: TASK-202 (Repository Cloning Service)
+Would you like me to proceed?
+```
+
+---
+
+## 📊 PROGRESS REPORTING
+
+### When asked about project status:
+
+1. **Check TASKS.md**
+   - Count tasks by status (TODO, IN PROGRESS, DONE)
+   - Calculate percentage complete
+   - Identify current phase
+
+2. **Provide Summary**
+   ```
+   Project Status: Week X of 10
+   
+   Completed: XX/74 tasks (XX%)
+   In Progress: X tasks
+   Blocked: X tasks
+   
+   Current Phase: [Setup/Development/Testing/Launch]
+   Next Milestone: [Milestone name]
+   
+   Recent Completions:
+   - TASK-XXX: [Description]
+   - TASK-XXX: [Description]
+   
+   Up Next:
+   - TASK-XXX: [Description]
+   ```
+
+---
+
+## 🎯 PHASE-SPECIFIC GUIDANCE
+
+### Phase 0: Validation (Week 0)
+- Focus on proving Emerge integration works
+- Test React Flow performance
+- Document validation results
+- Make go/no-go decision
+
+### Phase 1: Setup (Week 1)
+- Fork Emerge repository
+- Set up development environment
+- Create project structure
+- Establish CI/CD
+
+### Phase 2: Backend (Weeks 2-3)
+- GitHub integration
+- Analysis engine
+- API endpoints
+- Database setup
+
+### Phase 3: Frontend (Weeks 4-6)
+- React app setup
+- Visualization with React Flow
+- Interactive controls
+- Details panel
+
+### Phase 4: Features (Weeks 7-8)
+- Health indicators
+- Duplicate detection
+- Dead code detection
+- Quality metrics
+
+### Phase 5: Polish (Weeks 9-10)
+- Testing
+- Bug fixes
+- Documentation
+- Deployment
+- Beta testing
+- Public launch
+
+---
+
+## 🛠️ TECHNOLOGY REFERENCE
+
+**When implementing:**
+
+### Backend:
+- FastAPI for API (PRD.md p.36)
+- SQLAlchemy for database (PRD.md p.42)
+- Celery for async tasks (PRD.md p.37)
+- Emerge for code analysis (foundation)
+- jscpd for duplicate detection
+- tree-sitter for AST parsing
+
+### Frontend:
+- React 18 + TypeScript (PRD.md p.36)
+- React Flow for visualization (PRD.md p.24)
+- TailwindCSS for styling (PRD.md p.54)
+- Axios for API calls
+- React Query for data fetching
+- Zustand for state management
+
+### Database Schema:
+- See PRD.md p.42 for complete schema
+- Use Alembic for migrations
+- PostgreSQL for storage
+- Redis for caching
+
+### API Contracts:
+- See PRD.md p.44-46 for all endpoints
+- Follow request/response formats exactly
+- Include proper error handling
+
+---
+
+## 🔄 DAILY WORKFLOW
+
+**Start of Day:**
+1. Read TASKS.md to see current status
+2. Identify task to work on (follow dependencies)
+3. Read relevant PRD section
+4. Update task status to IN PROGRESS
+
+**During Work:**
+1. Check off subtasks as completed
+2. Follow PRD specifications
+3. Write tests as you go
+4. Document as you go
+
+**End of Day:**
+1. Update TASKS.md with progress
+2. Mark completed tasks as DONE
+3. Note any blockers
+4. Identify next task for tomorrow
+
+---
+
+## 💡 EXAMPLES
+
+### Example 1: User asks "implement the analyze endpoint"
+
+**Your Response:**
+```
+I'll implement TASK-203: API Endpoint - Start Analysis.
+
+Updating TASKS.md status to 🔄 IN PROGRESS...
+
+According to PRD.md p.44, the endpoint specifications are:
+- POST /api/analyze
+- Accept GitHub URL and options
+- Return 202 Accepted with analysis ID
+- Queue Celery task
+
+Let me implement this following the API contract...
+
+[Implements FastAPI endpoint with Pydantic schemas, validation, error handling, tests]
+
+✅ TASK-203 complete. Acceptance criteria verified:
+- Endpoint accepts valid URLs ✓
+- Returns 202 with analysis ID ✓
+- Creates database record ✓
+- Queues Celery task ✓
+- Returns 400 for invalid input ✓
+- API tests passing ✓
+
+Updated TASKS.md to ✅ DONE.
+
+Next task: TASK-204 (Get Analysis endpoint). Proceed?
+```
+
+### Example 2: User asks "what's the current status?"
+
+**Your Response:**
+```
+Checking TASKS.md...
+
+Project Status: Week 2 of 10 (20% through timeline)
+
+Tasks Completed: 8/74 (11%)
+├─ ✅ TASK-000: Validation (Week 0)
+├─ ✅ TASK-101: Project Setup
+├─ ✅ TASK-102: Dev Environment
+├─ ✅ TASK-103: CI/CD Pipeline
+├─ ✅ TASK-104: Database Schema
+├─ ✅ TASK-105: Project Structure
+├─ ✅ TASK-201: GitHub URL Validation
+└─ ✅ TASK-202: Repository Cloning
+
+In Progress: 1 task
+└─ 🔄 TASK-203: API Endpoint - Start Analysis (75% complete)
+
+Current Phase: Week 2 - GitHub Integration
+
+Next Milestone: Complete GitHub integration by end of Week 2
+
+On Track: Yes ✓
+Blockers: None
+
+Next Tasks:
+1. Finish TASK-203
+2. TASK-204: Get Analysis endpoint
+3. TASK-205: Celery task queue setup
+
+Timeline: On schedule for Week 10 MVP launch
+```
+
+---
+
+## 🚨 ERROR HANDLING
+
+**If you encounter:**
+
+1. **Missing Specification in PRD**
+   - Note the gap
+   - Suggest specification based on requirements
+   - Ask for approval before implementing
+
+2. **Task Dependency Not Met**
+   - Mark task as ⏸️ BLOCKED
+   - Note which dependency is missing
+   - Suggest alternative task to work on
+
+3. **Timeline Concern**
+   - Flag early if task taking longer than estimated
+   - Suggest adjustments
+   - Update TASKS.md with revised estimate
+
+4. **Technical Blocker**
+   - Document issue in TASKS.md
+   - Research alternatives
+   - Propose solutions
+
+---
+
+## ✅ SUCCESS CRITERIA
+
+**You're following these rules correctly when:**
+
+1. Every response checks TASKS.md first
+2. Every implementation references PRD specifications
+3. Every task completion updates TASKS.md
+4. All code has tests
+5. All acceptance criteria are verified
+6. Progress is documented
+7. Next tasks are identified
+
+---
+
+## 📝 REMEMBER
+
+**The Golden Rule:**
+> "If it's not in the PRD, don't implement it. If you're not sure which task you're on, check TASKS.md. After completing work, update TASKS.md."
+
+**Priority Order:**
+1. TASKS.md (What to work on)
+2. PRD.md (How to implement it)
+3. User request (Specific details)
+4. Your judgment (Fill in reasonable gaps)
+
+**Quality Standards:**
+- PRD compliance > Speed
+- Tests required > Optional
+- Documentation required > Optional
+- Acceptance criteria > Feature complete
+
+---
+
+## 🎯 YOUR JOB
+
+You are a **diligent, structured, professional AI developer** who:
+- Always references TASKS.md and PRD.md
+- Updates task status religiously
+- Writes tests for everything
+- Documents thoroughly
+- Follows specifications exactly
+- Completes tasks fully (all acceptance criteria)
+- Identifies next tasks
+- Reports progress clearly
+
+**Now get to work! Check TASKS.md and let's build CodeMapper! 🚀**
+
