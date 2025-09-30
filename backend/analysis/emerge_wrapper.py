@@ -161,7 +161,8 @@ class EmergeAnalyzer:
         
         # Parse GraphML for dependencies
         dependencies = {}
-        graphml_files = list(output_path.glob('*dependency*.graphml'))
+        # Use filesystem graph (has folder structure edges)
+        graphml_files = list(output_path.glob('*filesystem*.graphml'))
         
         if graphml_files:
             dependencies = self._parse_graphml_dependencies(graphml_files[0])
