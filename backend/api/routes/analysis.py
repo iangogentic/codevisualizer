@@ -58,8 +58,9 @@ async def start_analysis(
     db.commit()
     db.refresh(analysis)
     
-    # TODO: Queue Celery task (TASK-205)
-    # For now, just return the ID
+    # Queue Celery task
+    from tasks.analyze_repository import analyze_repository_task
+    analyze_repository_task.delay(str(analysis.id), request.github_url)
     
     return AnalyzeResponse(
         analysis_id=analysis.id,
