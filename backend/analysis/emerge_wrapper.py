@@ -146,7 +146,7 @@ class EmergeAnalyzer:
             output_dir: Directory containing Emerge output
             
         Returns:
-            dict: Parsed analysis results
+            dict: Parsed analysis results with dependencies
         """
         # Find JSON output file
         output_path = Path(output_dir)
@@ -159,15 +159,59 @@ class EmergeAnalyzer:
         with open(json_files[0], 'r') as f:
             data = json.load(f)
         
+        # Parse GraphML for dependencies
+        dependencies = {}
+        graphml_files = list(output_path.glob('*dependency*.graphml'))
+        
+        if graphml_files:
+            dependencies = self._parse_graphml_dependencies(graphml_files[0])
+        
         # Transform to our format
         result = {
             'statistics': data.get('statistics', {}),
             'overall_metrics': data.get('overall-metrics', {}),
             'file_metrics': data.get('local-metrics', {}),
+            'dependencies': dependencies,
             'analysis_name': data.get('analysis-name', ''),
         }
         
         return result
+    
+    def _parse_graphml_dependencies(self, graphml_file: Path) -> Dict[str, list]:
+        """
+        Parse GraphML file to extract dependencies
+        
+        Args:
+            graphml_file: Path to GraphML file
+            
+        Returns:
+            dict: Map of source -> [targets]
+        """
+        import xml.etree.ElementTree as ET
+        
+        dependencies = {}
+        
+        try:
+            tree = ET.parse(graphml_file)
+            root = tree.getroot()
+            
+            # GraphML namespace
+            ns = {'g': 'http://graphml.graphdrawing.org/xmlns'}
+            
+            # Find all edges
+            for edge in root.findall('.//g:edge', ns):
+                source = edge.get('source')
+                target = edge.get('target')
+                
+                if source and target:
+                    if source not in dependencies:
+                        dependencies[source] = []
+                    dependencies[source].append(target)
+        
+        except Exception as e:
+            print(f"Warning: Could not parse GraphML: {e}")
+        
+        return dependencies
     
     def detect_language(self, repo_path: str) -> str:
         """

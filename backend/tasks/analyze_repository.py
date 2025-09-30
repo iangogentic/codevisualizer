@@ -115,9 +115,12 @@ def analyze_repository_task(self, analysis_id: str, github_url: str):
         analysis.total_loc = results['overall_metrics'].get('total-sloc-in-files', 0)
         analysis.metrics = results['overall_metrics']
         
-        # Transform to graph format
-        graph_data = GraphBuilder.build_graph_from_emerge(results['file_metrics'])
-        analysis.graph_data = graph_data
+            # Transform to graph format (include dependencies)
+            graph_data = GraphBuilder.build_graph_from_emerge(
+                results['file_metrics'],
+                results.get('dependencies', {})
+            )
+            analysis.graph_data = graph_data
         
         analysis.status = 'completed'
         analysis.completed_at = datetime.utcnow()
