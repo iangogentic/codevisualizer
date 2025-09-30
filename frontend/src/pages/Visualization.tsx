@@ -43,7 +43,10 @@ const Visualization: React.FC = () => {
           setNodes(status.graph_data.nodes.map((node, idx) => ({
             id: node.id,
             position: { x: (idx % 5) * 250, y: Math.floor(idx / 5) * 150 },
-            data: node.data,
+            data: {
+              ...node.data,
+              label: node.label || node.data.path?.split('/').pop() || 'File'  // Add label to data
+            },
             style: getNodeStyle(node.data.health)
           })));
           setEdges(status.graph_data.edges);
