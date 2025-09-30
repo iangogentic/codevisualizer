@@ -8,6 +8,7 @@ echo.
 echo Setting environment variables...
 set DATABASE_URL=sqlite:///./codemapper.db
 set PYTHONPATH=C:\Users\ianig\Desktop\CodeVisualizer\backend
+set USE_CELERY=0
 echo.
 echo Starting FastAPI server...
 echo Backend API will be at: http://localhost:8000
