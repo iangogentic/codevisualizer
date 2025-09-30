@@ -7,7 +7,6 @@ TASK: TASK-203, TASK-204
 
 from fastapi import APIRouter, HTTPException, Depends
 from sqlalchemy.orm import Session
-from uuid import UUID
 import uuid
 
 from api.schemas.analysis import AnalyzeRequest, AnalyzeResponse, AnalysisStatus
@@ -48,7 +47,7 @@ async def start_analysis(
     
     # Create analysis record
     analysis = Analysis(
-        id=uuid.uuid4(),
+        id=str(uuid.uuid4()),
         github_url=request.github_url,
         repository_name=repository_name,
         status='pending'
@@ -72,7 +71,7 @@ async def start_analysis(
 
 @router.get("/analysis/{analysis_id}", response_model=AnalysisStatus)
 async def get_analysis(
-    analysis_id: UUID,
+    analysis_id: str,
     db: Session = Depends(get_db)
 ):
     """
@@ -82,7 +81,7 @@ async def get_analysis(
     TASK: TASK-204
     
     Args:
-        analysis_id: UUID of the analysis
+        analysis_id: UUID string of the analysis
         db: Database session
         
     Returns:

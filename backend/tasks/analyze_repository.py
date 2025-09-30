@@ -12,7 +12,6 @@ from analysis.emerge_wrapper import EmergeAnalyzer
 from database.db import SessionLocal
 from database.models import Analysis
 import logging
-from uuid import UUID
 from datetime import datetime
 
 logger = logging.getLogger(__name__)
@@ -38,7 +37,7 @@ class AnalysisTask(Task):
         """Update analysis status in database"""
         db = SessionLocal()
         try:
-            analysis = db.query(Analysis).filter(Analysis.id == UUID(analysis_id)).first()
+            analysis = db.query(Analysis).filter(Analysis.id == analysis_id).first()
             if analysis:
                 analysis.status = status
                 if status == 'failed':
@@ -78,7 +77,7 @@ def analyze_repository_task(self, analysis_id: str, github_url: str):
     
     try:
         # Update status to 'processing'
-        analysis = db.query(Analysis).filter(Analysis.id == UUID(analysis_id)).first()
+        analysis = db.query(Analysis).filter(Analysis.id == analysis_id).first()
         if not analysis:
             raise ValueError(f"Analysis {analysis_id} not found")
         
@@ -139,7 +138,7 @@ def analyze_repository_task(self, analysis_id: str, github_url: str):
         # Update database
         if db:
             try:
-                analysis = db.query(Analysis).filter(Analysis.id == UUID(analysis_id)).first()
+                analysis = db.query(Analysis).filter(Analysis.id == analysis_id).first()
                 if analysis:
                     analysis.status = 'failed'
                     analysis.error_message = str(e)
