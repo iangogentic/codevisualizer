@@ -19,6 +19,9 @@ pygithub==2.1.1
 # Code Analysis
 tree-sitter==0.20.4
 
+# Configuration
+pyyaml==6.0.1
+
 # Utilities
 pydantic==2.5.0
 python-dotenv==1.0.0
