@@ -1,9 +1,9 @@
-"""
-API Client for CodeMapper Backend
-
-PRD Reference: PRD.md p.44-46
-TASK: TASK-402
-"""
+/**
+ * API Client for CodeMapper Backend
+ * 
+ * PRD Reference: PRD.md p.44-46
+ * TASK: TASK-402
+ */
 
 import axios, { AxiosInstance } from 'axios';
 
