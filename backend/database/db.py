@@ -10,7 +10,8 @@ from sqlalchemy.orm import sessionmaker
 import os
 
 # Database URL from environment variable
-DATABASE_URL = os.getenv("DATABASE_URL", "postgresql://codemapper_user:codemapper_pass@localhost:5432/codemapper")
+# Use SQLite for development (no Docker needed)
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./codemapper.db")
 
 # Create engine
 engine = create_engine(DATABASE_URL)
