@@ -535,9 +535,12 @@ POST /api/analyze
 ## WEEK 4: React Frontend Foundation
 
 ### TASK-401: React Project Setup
-**Status:** ⬜ TODO  
+**Status:** ✅ DONE  
 **Priority:** P0  
 **Estimate:** 0.5 day  
+**Actual:** Already complete (from TASK-000)  
+**Assignee:** Development Team  
+**Completed:** September 30, 2025  
 **Dependencies:** None (parallel to backend)  
 **PRD Reference:** PRD.md p.36, Frontend Stack
 
@@ -576,10 +579,12 @@ frontend/src/
 ---
 
 ### TASK-402: API Client Setup
-**Status:** ⬜ TODO  
+**Status:** 🔄 IN PROGRESS  
 **Priority:** P0  
 **Estimate:** 0.5 day  
-**Dependencies:** TASK-401  
+**Assignee:** Development Team  
+**Started:** September 30, 2025  
+**Dependencies:** TASK-401 ✅  
 **PRD Reference:** PRD.md p.42
 
 **Subtasks:**
