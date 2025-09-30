@@ -57,9 +57,55 @@ async def start_analysis(
     db.commit()
     db.refresh(analysis)
     
-    # Queue Celery task
-    from tasks.analyze_repository import analyze_repository_task
-    analyze_repository_task.delay(str(analysis.id), request.github_url)
+    # Queue Celery task (or run synchronously if Celery not available)
+    try:
+        from tasks.analyze_repository import analyze_repository_task
+        analyze_repository_task.delay(str(analysis.id), request.github_url)
+    except (ImportError, Exception) as e:
+        # Celery not available, run analysis synchronously for demo
+        import logging
+        logging.warning(f"Celery not available ({e}), running sync analysis")
+        
+        # Import analysis functions
+        from github.client import GitHubClient
+        from analysis.emerge_wrapper import EmergeAnalyzer
+        from analysis.graph_builder import GraphBuilder
+        from datetime import datetime
+        
+        # Run analysis inline
+        try:
+            analysis.status = 'processing'
+            db.commit()
+            
+            # Clone and analyze
+            repo_path = GitHubClient.clone_repository(request.github_url)
+            commit_sha = GitHubClient.get_commit_sha(repo_path)
+            
+            analyzer = EmergeAnalyzer()
+            language = analyzer.detect_language(repo_path)
+            results = analyzer.run_analysis(repo_path, language)
+            
+            # Store results
+            analysis.commit_sha = commit_sha
+            analysis.primary_language = language
+            analysis.total_files = results['statistics'].get('scanned_files', 0)
+            analysis.total_loc = results['overall_metrics'].get('total-sloc-in-files', 0)
+            analysis.metrics = results['overall_metrics']
+            
+            graph_data = GraphBuilder.build_graph_from_emerge(results['file_metrics'])
+            analysis.graph_data = graph_data
+            
+            analysis.status = 'completed'
+            analysis.completed_at = datetime.utcnow()
+            db.commit()
+            
+            # Cleanup
+            GitHubClient.cleanup(repo_path)
+        except Exception as analysis_error:
+            analysis.status = 'failed'
+            analysis.error_message = str(analysis_error)
+            analysis.completed_at = datetime.utcnow()
+            db.commit()
     
     return AnalyzeResponse(
         analysis_id=analysis.id,
