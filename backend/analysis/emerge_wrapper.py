@@ -51,6 +51,20 @@ class EmergeAnalyzer:
         """
         output_dir = tempfile.mkdtemp(prefix='emerge_output_')
         
+        # Map language to file extensions
+        extension_map = {
+            'py': ['.py'],
+            'javascript': ['.js'],
+            'typescript': ['.ts'],
+            'java': ['.java'],
+            'cpp': ['.cpp', '.cc', '.cxx'],
+            'c': ['.c', '.h'],
+            'go': ['.go'],
+            'ruby': ['.rb'],
+        }
+        
+        extensions = extension_map.get(language, ['.py'])
+        
         config = {
             'project_name': 'analysis',
             'loglevel': 'info',
@@ -59,6 +73,7 @@ class EmergeAnalyzer:
                     'analysis_name': 'code_analysis',
                     'source_directory': str(repo_path),
                     'only_permit_languages': [language],
+                    'only_permit_file_extensions': extensions,
                     'file_scan': [
                         'number_of_methods',
                         'source_lines_of_code',
@@ -102,8 +117,9 @@ class EmergeAnalyzer:
             from emerge.appear import Emerge
             
             # Run analysis
-            emerge = Emerge(config_file)
-            emerge.start()
+            emerge = Emerge()
+            emerge.load_config(config_file)
+            emerge.start_analyzing()  # Use start_analyzing() not start()
             
             # Parse output
             output_dir = self._get_output_dir(config_file)
