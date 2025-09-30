@@ -15,8 +15,9 @@ import ReactFlow, {
   useEdgesState,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { getAnalysis, pollAnalysis } from '../api/analysis';
+import { pollAnalysis } from '../api/analysis';
 import { AnalysisResult } from '../types/analysis';
+import { applyHierarchicalLayout } from '../utils/layoutGraph';
 
 const Visualization: React.FC = () => {
   const { analysisId } = useParams<{ analysisId: string }>();
@@ -40,16 +41,23 @@ const Visualization: React.FC = () => {
         
         // If completed, set graph data
         if (status.status === 'completed' && status.graph_data) {
-          setNodes(status.graph_data.nodes.map((node, idx) => ({
+          const rawNodes = status.graph_data.nodes.map((node) => ({
             id: node.id,
-            position: { x: (idx % 5) * 250, y: Math.floor(idx / 5) * 150 },
+            position: { x: 0, y: 0 },  // Will be set by layout
             data: {
               ...node.data,
-              label: node.label || node.data.path?.split('/').pop() || 'File'  // Add label to data
+              label: node.label || node.data.path?.split('/').pop() || 'File'
             },
             style: getNodeStyle(node.data.health)
-          })));
-          setEdges(status.graph_data.edges);
+          }));
+          
+          const rawEdges = status.graph_data.edges || [];
+          
+          // Apply hierarchical layout by folder structure
+          const { nodes: layoutedNodes, edges: layoutedEdges } = applyHierarchicalLayout(rawNodes, rawEdges);
+          
+          setNodes(layoutedNodes);
+          setEdges(layoutedEdges);
           setLoading(false);
         }
       }
