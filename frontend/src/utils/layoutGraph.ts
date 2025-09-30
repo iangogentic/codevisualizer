@@ -26,7 +26,7 @@ function buildFolderTree(nodes: Node[]): FolderNode {
 
   nodes.forEach(node => {
     const path = node.data.path || node.id;
-    const parts = path.split(/[/\\]/).filter(p => p);
+    const parts = path.split(/[/\\]/).filter((p: string) => p);
     
     let current = root;
     let currentPath = '';
@@ -35,10 +35,11 @@ function buildFolderTree(nodes: Node[]): FolderNode {
     for (let i = 0; i < parts.length - 1; i++) {
       currentPath += (currentPath ? '/' : '') + parts[i];
       
-      let folder = current.children.find(c => c.path === currentPath);
+      const folderPath = currentPath;  // Capture for closure
+      let folder = current.children.find(c => c.path === folderPath);
       if (!folder) {
         folder = {
-          path: currentPath,
+          path: folderPath,
           children: [],
           files: [],
           level: i + 1
