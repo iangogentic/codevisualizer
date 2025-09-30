@@ -11,14 +11,7 @@ import uuid
 from .db import Base
 
 # For SQLite compatibility, use String for UUID and JSON for JSONB
-try:
-    from sqlalchemy.dialects.postgresql import UUID, JSONB
-    UUID_TYPE = UUID(as_uuid=True)
-    JSON_TYPE = JSONB
-except:
-    UUID_TYPE = String(36)
-    from sqlalchemy import JSON
-    JSON_TYPE = JSON
+from sqlalchemy import JSON
 
 
 class Analysis(Base):
@@ -42,14 +35,14 @@ class Analysis(Base):
     total_files = Column(Integer)
     total_loc = Column(Integer)
     primary_language = Column(String(50))
-    languages = Column(JSON_TYPE)
+    languages = Column(JSON)
     
     # Results
-    graph_data = Column(JSON_TYPE)
-    metrics = Column(JSON_TYPE)
-    health_scores = Column(JSON_TYPE)
-    dead_code = Column(JSON_TYPE)
-    duplicates = Column(JSON_TYPE)
+    graph_data = Column(JSON)
+    metrics = Column(JSON)
+    health_scores = Column(JSON)
+    dead_code = Column(JSON)
+    duplicates = Column(JSON)
     
     __table_args__ = (
         CheckConstraint("status IN ('pending', 'processing', 'completed', 'failed')", name='valid_status'),
